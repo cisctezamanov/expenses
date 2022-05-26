@@ -11,17 +11,17 @@
         <h5 class="card-header">Payment</h5>
         <div class="card-body">
           <div class="mb-3">
-            <label for="num" class="form-label">Amount</label>
-            <input type="number" class="form-control" step="0.01" id="num">
+            <label for="amount" class="form-label">Amount</label>
+            <input type="number" class="form-control" step="0.01" id="amount">
           </div>
 
-          <select class="form-select">
+          <select class="form-select" id="type">
             <option disabled selected>Select type</option>
             <option value="entry">Entry</option>
             <option value="exist">Exist</option>
           </select>
 
-          <button type="button" class="btn btn-primary mt-3" data-role="add-payment" name="button">Add</button>
+          <button type="button" class="btn btn-primary mt-3" data-role="add-payment" name="button">Pay</button>
         </div>
       </div>
     </div>
@@ -32,10 +32,19 @@
     <script type="text/javascript">
       $(document).on("click", `[data-role="add-payment"]`, function() {
         console.log("Payment added");
+        let amount = $("#amount").val();
+        let type = $("#type").val();
 
-        // $.ajax({
-        //   url: ""
-        // });
+        $.post({
+          url: "/api/payments/add",
+          data: {amount, type},
+          success: function(data) {
+            console.log("Success!");
+          },
+          error: function(err) {
+            console.log("Error!", err);
+          }
+        });
       });
     </script>
   </body>

@@ -21,7 +21,7 @@ if ($config["sub_domain_modules"]) {
 
 $config["device_active"] = FALSE;
 
-$config['base_url'] = "http://my.hmvc.loc/";
+$config['base_url'] = "http://expenses.loc/";
 
 
 /*

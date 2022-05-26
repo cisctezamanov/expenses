@@ -139,7 +139,7 @@ if (!function_exists("json_response")) {
     header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept');
     header('Content-Type: application/json');
     $config = $CI->config->item('api_entry_credentials');
-    
+
     echo json_encode($data);
     die;
   }
