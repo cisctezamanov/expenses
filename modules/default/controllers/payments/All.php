@@ -15,6 +15,13 @@ class All extends MY_Controller{
 
   function live() {
     $result = $this->model->getPaymentList();
+
+    if (isset($result["code"]) && $result["code"] === Status_codes::HTTP_OK) {
+      foreach ($result["data"] as $key => $item) {
+        $result["data"][$key]["operation_date"] = date("Y-m-d", strtotime($item["operation_date"]));
+      }
+    }
+
     return json_response($result);
   }
 

@@ -15,6 +15,7 @@ class MY_Controller extends MX_Controller
 
     $this->__filter_params = [$this->uri->uri_string()];
     $this->call_filters("before");
+    $this->lang->load("app", $this->config->item("current_language"));
   }
 
   public function _remap($method, $parameters = [])  {
