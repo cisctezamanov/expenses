@@ -1,21 +1,13 @@
 $(function() {
   const paymentComponent = (data) => {
-    let { row_count, id, amount, type, operation_date, entries, exists } = data;
-
-    const entry = entries().reduce((total, entry) => {
-      return total + entry;
-    }, 0);
-
-    const exist = exists().reduce((total, exist) => {
-      return total + exist;
-    }, 0);
+    let { row_count, id, amount, type, operation_date, balance } = data;
 
     return `
       <tr data-id="${id}">
         <td>${operation_date}</td>
-        <td>${type === "entry" ? amount : ""}</td>
-        <td>${type === "exist" ? amount : ""}</td>
-        <td>${entry - exist}</td>
+        <td>${type === "entry" ? amount : ""} ${(amount > 0 && type === "entry") ? "$" : ""}</td>
+        <td>${type === "exist" ? amount : ""} ${(amount > 0 && type === "exist") ? "$" : ""}</td>
+        <td>${balance} ${balance > 0 ? "$" : ""}</td>
         <td>
           <a href="payments/${id}/edit" class="btn btn-success btn-sm">Edit</a>
           <button type="button" data-role="delete-payment" class="btn btn-danger btn-sm">Delete</button>
@@ -25,20 +17,12 @@ $(function() {
   }
 
   const balanceComponent = (data) => {
-    let {operation_date, entries, exists} = data;
-
-    const entry = entries.reduce((total, entry) => {
-      return total + entry;
-    }, 0);
-
-    const exist = exists.reduce((total, exist) => {
-      return total + exist;
-    }, 0);
+    let {operation_date, balance} = data;
 
     return `
       <tr>
         <td>${operation_date}</td>
-        <td>${entry - exist}</td>
+        <td>${balance} ${balance > 0 ? "$" : ""}</td>
       </tr>
     `;
   }
@@ -114,18 +98,13 @@ $(function() {
     $.get({
       url: "api/payments/list-live",
       success: function(data) {
-        console.log("Success!");
+        console.log(data);
         let html = "";
         let balance_html = "";
         let row_count = 0;
 
         if (data.code === 200) {
           let payments = data.data;
-          payments.reverse();
-
-          let entries = [];
-          let exists = [];
-          const operation_date = payments[payments.length - 1].operation_date;
 
           html += payments.map((payment) => paymentComponent({
               row_count: ++row_count,
@@ -133,24 +112,16 @@ $(function() {
               amount: payment.amount,
               type: payment.type,
               operation_date: payment.operation_date,
-              entries: function() {
-                if (payment.type === "entry") {
-                  entries.push(+payment.amount);
-                }
-                return entries;
-              },
-              exists: function() {
-                if (payment.type === "exist") {
-                  exists.push(+payment.amount);
-                }
-                return exists;
-              }
+              balance: payment.balance
             })
           );
 
-          balance_html += balanceComponent({operation_date, entries, exists});
+          balance_html += balanceComponent({
+            operation_date: payments[0].operation_date,
+            balance: payments[0].balance
+          });
 
-          $(`[data-role="table-list"]`).html(html.split(",").reverse().join());
+          $(`[data-role="table-list"]`).html(html);
           $(`[data-role="last-balance"]`).html(balance_html);
 
         } else {

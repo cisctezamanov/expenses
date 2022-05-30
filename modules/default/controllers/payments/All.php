@@ -20,6 +20,22 @@ class All extends MY_Controller{
       foreach ($result["data"] as $key => $item) {
         $result["data"][$key]["operation_date"] = date("Y-m-d h a", strtotime($item["operation_date"]));
       }
+
+      $result["data"] = array_reverse($result["data"]);
+
+      $balance = 0;
+      foreach ($result["data"] as $key => $item) {
+        if ($result["data"][$key]["type"] === "entry") {
+          $balance += (float)$result["data"][$key]["amount"];
+          $result["data"][$key]["balance"] = $balance;
+        }
+        else {
+          $balance -= (float)$result["data"][$key]["amount"];
+          $result["data"][$key]["balance"] = $balance;
+        }
+      }
+
+      $result["data"] = array_reverse($result["data"]);
     }
 
     return json_response($result);
