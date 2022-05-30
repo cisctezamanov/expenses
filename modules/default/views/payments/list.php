@@ -8,8 +8,8 @@
   <body>
     <div class="container">
       <div class="col-8 mx-auto my-3">
-        <div class="container mb-3">
-          <div class="card col-6 mx-auto">
+        <div class="container mb-3 d-flex d-inline justify-content-between">
+          <div class="card col-5">
             <h5 class="card-header"><?= lang("Payment add") ?></h5>
             <div class="card-body">
               <div class="mb-3">
@@ -24,15 +24,32 @@
                name="button"><?= lang("Pay") ?></button>
             </div>
           </div>
+
+          <div class="card col-5">
+            <h5 class="card-header"><?= lang("Balance") ?></h5>
+            <div class="card-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col"><?= lang("Operation date") ?></th>
+                    <th scope="col"><?= lang("Balance") ?></th>
+                  </tr>
+                </thead>
+                <tbody data-role="last-balance">
+
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
 
         <table class="table">
           <thead>
             <tr>
-              <th scope="col">#</th>
-              <th scope="col"><?= lang("Amount") ?></th>
-              <th scope="col"><?= lang("Type") ?></th>
               <th scope="col"><?= lang("Operation date") ?></th>
+              <th scope="col"><?= lang("Entry") ?></th>
+              <th scope="col"><?= lang("Exist") ?></th>
+              <th scope="col"><?= lang("Balance") ?></th>
               <th scope="col"><?= lang("Actions") ?></th>
             </tr>
           </thead>

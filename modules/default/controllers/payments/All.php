@@ -18,7 +18,7 @@ class All extends MY_Controller{
 
     if (isset($result["code"]) && $result["code"] === Status_codes::HTTP_OK) {
       foreach ($result["data"] as $key => $item) {
-        $result["data"][$key]["operation_date"] = date("Y-m-d", strtotime($item["operation_date"]));
+        $result["data"][$key]["operation_date"] = date("Y-m-d h a", strtotime($item["operation_date"]));
       }
     }
 
